@@ -1,0 +1,31 @@
+"E:\software_installed\Clion\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - NMake Makefiles" E:\3DataInnerTrans\zhangbo\self\OpenToolLists\src
+-- The C compiler identification is MSVC 19.0.24215.1
+-- The CXX compiler identification is MSVC 19.0.24215.1
+-- Check for working C compiler: E:/software_installed/vs2015/VC/bin/amd64/cl.exe
+-- Check for working C compiler: E:/software_installed/vs2015/VC/bin/amd64/cl.exe - works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: E:/software_installed/vs2015/VC/bin/amd64/cl.exe
+-- Check for working CXX compiler: E:/software_installed/vs2015/VC/bin/amd64/cl.exe - works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- E:/3DataInnerTrans/zhangbo/self/OpenToolLists/src/..
+CMake Warning (dev) in CMakeLists.txt:
+  No cmake_minimum_required command is present.  A line of code such as
+
+    cmake_minimum_required(VERSION 3.17)
+
+  should be added at the top of the file.  The version specified may be lower
+  if you wish to support older CMake versions for this project.  For more
+  information run "cmake --help-policy CMP0000".
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Configuring done
+CMake Error: Cannot determine link language for target "OTL_STATIC".
+CMake Error: CMake can not determine linker language for target: OTL_STATIC
+-- Generating done
+CMake Generate step failed.  Build files cannot be regenerated correctly.

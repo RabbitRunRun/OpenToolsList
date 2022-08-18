@@ -1,0 +1,4 @@
+ToolSet: 14.0 (local)@E:\software_installed\vs2015
+Options: msvc.arch=amd64
+
+Options:
