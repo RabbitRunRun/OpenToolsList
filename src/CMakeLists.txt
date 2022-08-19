@@ -5,8 +5,8 @@ set(OTL_SOURCE_DIR ${PROJECT_SOURCE_DIR}/..)
 option(OTL_WITH_OPENSSL "Supporting AES, RAS and SSL with OpenSSL" OFF)
 
 include_directories(${OTL_SOURCE_DIR}/include)
+include_directories(${OTL_SOURCE_DIR}/include/otl)
 include_directories(${OTL_SOURCE_DIR}/src)
-MESSAGE(STATUS "${OTL_SOURCE_DIR}")
 
 set(OTL_MODULES codec io lego mem net sync tools utils)
 
@@ -19,13 +19,13 @@ set(OTL_SRC_FILES)
 set(OTL_SRC_INCLUDE_FILES)
 
 foreach (module ${OTL_MODULES})
-    FILE(GLOB_RECURSE OTL_INCLUDE_${module}_FILES ${OTL_SOURCE_DIR}/include/OTL/${module}/*.h)
+    FILE(GLOB_RECURSE OTL_INCLUDE_${module}_FILES ${OTL_SOURCE_DIR}/include/otl/${module}/*.h)
     LIST(APPEND OTL_INCLUDE_FILES ${OTL_INCLUDE_${module}_FILES})
 
-    FILE(GLOB_RECURSE OTL_SRC_${module}_FILES ${OTL_SOURCE_DIR}/src/OTL/${module}/*.cpp)
+    FILE(GLOB_RECURSE OTL_SRC_${module}_FILES ${OTL_SOURCE_DIR}/src/otl/${module}/*.cpp)
     LIST(APPEND OTL_SRC_FILES ${OTL_SRC_${module}_FILES})
 
-    FILE(GLOB_RECURSE OTL_SRC_INCLUDE_${module}_FILES ${OTL_SOURCE_DIR}/src/OTL/${module}/*.h)
+    FILE(GLOB_RECURSE OTL_SRC_INCLUDE_${module}_FILES ${OTL_SOURCE_DIR}/src/otl/${module}/*.h)
     LIST(APPEND OTL_SRC_INCLUDE_FILES ${OTL_SRC_INCLUDE_${module}_FILES})
 endforeach ()
 
@@ -59,7 +59,7 @@ elseif (UNIX)
     # target_link_libraries(${PROJECT_NAME}_STATIC uuid)
 endif ()
 
-# set_target_properties(${PROJECT_NAME}_SHARED PROPERTIES OUTPUT_NAME ${PROJECT_NAME}${ENV_SUFFIX})
+#set_target_properties(${PROJECT_NAME}_SHARED PROPERTIES OUTPUT_NAME ${PROJECT_NAME}${ENV_SUFFIX})
 set_target_properties(${PROJECT_NAME}_STATIC PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_static${ENV_SUFFIX})
 
 if (OTL_INSTALL)
@@ -71,7 +71,7 @@ if (OTL_INSTALL)
             ARCHIVE DESTINATION ${ENV_ARCHIVE_DIR}
             )
 
-    install(DIRECTORY ${OTL_INCLUDE_DIR}/OTL
+    install(DIRECTORY ${OTL_INCLUDE_DIR}/otl
             DESTINATION ${ENV_HEADER_DIR}
             )
 

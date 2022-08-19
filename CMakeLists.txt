@@ -33,8 +33,11 @@ endif ()
 add_subdirectory(src)
 
 # project files for clion
-#FILE(GLOB_RECURSE TEST_FILES ${PROJECT_SOURCE_DIR}/test/*.cpp)
+message(STATUS "Project source: ${PROJECT_SOURCE_DIR}")
+FILE(GLOB_RECURSE TEST_FILES ${PROJECT_SOURCE_DIR}/test/*.cpp)
+message(STATUS "ddd${TEST_FILES}")
 FILE(GLOB_RECURSE TOOL_FILES ${PROJECT_SOURCE_DIR}/tools/*.cpp)
+message(STATUS "ddd${TOOL_FILES}")
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
@@ -44,7 +47,7 @@ foreach (path ${TEST_FILES})
     add_executable(test_${file} ${path})
     set_target_properties(test_${file} PROPERTIES OUTPUT_NAME test_${file}${ENV_SUFFIX})
     target_link_libraries(test_${file} ${PROJECT_NAME}_STATIC)
-    # set_target_properties(test_${file} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${LOCAL_OUTPUT_DIR}/lib)
+    set_target_properties(test_${file} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${LOCAL_OUTPUT_DIR}/lib)
 endforeach ()
 
 foreach (path ${TOOL_FILES})
