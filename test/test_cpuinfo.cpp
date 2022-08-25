@@ -8,7 +8,20 @@
 #include <vector>
 #include <bitset>
 
+class StaticTester{
+public:
+
+    static int get(){
+        return m_data;
+    }
+private:
+    static int m_data;
+};
+int StaticTester::m_data = -2;
+
 int main(int argc, char** argv){
+    std::cout << StaticTester::get() << std::endl;
+
     std::array<int, 4> cpui;
     __cpuid(cpui.data(), 0);
     int max_code = cpui[0];
