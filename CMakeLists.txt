@@ -35,9 +35,9 @@ add_subdirectory(src)
 # project files for clion
 message(STATUS "Project source: ${PROJECT_SOURCE_DIR}")
 FILE(GLOB_RECURSE TEST_FILES ${PROJECT_SOURCE_DIR}/test/*.cpp)
-message(STATUS "ddd${TEST_FILES}")
+message(STATUS "${TEST_FILES}")
 FILE(GLOB_RECURSE TOOL_FILES ${PROJECT_SOURCE_DIR}/tools/*.cpp)
-message(STATUS "ddd${TOOL_FILES}")
+message(STATUS "${TOOL_FILES}")
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
