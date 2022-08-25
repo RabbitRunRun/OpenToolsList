@@ -62,13 +62,13 @@ namespace otl{
             memcpy_s(m_data.get(), mem_used, data_from, mem_used);
         }
 
-#define LOCATION(h, w, c) (( h * m_width + w ) * m_channels + c)
+#define LOCATION(h,w,c) ((h * m_width + w ) * m_channels + c)
 
         T at(size_t h, size_t w, size_t c){
             OTL_ASSERT(h < m_height);
             OTL_ASSERT(w < m_width);
             OTL_ASSERT(c < m_channels);
-            int location = LOCATION(h, w, c);
+            size_t location = LOCATION(h, w, c);
             return *(reinterpret_cast<T*>(m_data.get()) + location);
         }
 
@@ -76,12 +76,10 @@ namespace otl{
             OTL_ASSERT(h < m_height);
             OTL_ASSERT( w < m_width);
             OTL_ASSERT(c < m_channels);
-            int location = LOCATION(h, w, c);
+            size_t location = LOCATION(h, w, c);
             *(reinterpret_cast<T*>(m_data.get()) + location) = value;
         }
-
-#undef LOCATION(h, w, c)
-
+#undef LOCATION(h,w,c)
         self& operator=(const self &other){
             this->m_width = other.m_width;
             this->m_height = other.m_height;
