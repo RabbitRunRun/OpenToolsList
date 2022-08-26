@@ -45,15 +45,15 @@ namespace otl{
             PointF p1 = polygon.point(i);
             PointF p2 = polygon.point((i + 1) % points_num);//line
 
-            int32_t line_min_y = std::min(p1.y,p2.y);
-            int32_t line_max_y = std::max(p1.y, p2.y);
+            int32_t line_min_y = (int32_t)std::min(p1.y,p2.y);
+            int32_t line_max_y = (int32_t)std::max(p1.y, p2.y);
             if((point.y <= line_min_y) || (point.y > line_max_y)) continue;//no cross point or cross upper point or cross a horizontal line
 
             if(point_in_line(Line(p1, p2), point)) return true;// if point in line
 
             if(p1.y == p2.y) continue; //make sure y1 != y2
 
-            int cross_point_x = p2.x - (p2.y - point.y) * (p2.x - p1.x) / (p2.y - p1.y);
+            int cross_point_x = int(p2.x - (p2.y - point.y) * (p2.x - p1.x) / (p2.y - p1.y));
             if(cross_point_x < point.x) continue; // no cross for ray line to right
 
             in_poly = !in_poly;
