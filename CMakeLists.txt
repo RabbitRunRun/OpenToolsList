@@ -15,6 +15,7 @@ list(APPEND CMAKE_PREFIX_PATH ${SOLUTION_DIR}/cmake)
 set(PLATFORM "auto" CACHE STRING "auto, x86 or x64")
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Debug or Release")
 set(CONFIGURATION ${CMAKE_BUILD_TYPE})
+option(OTL_WITH_OPENCV "with opencv to compile test files" ON)
 
 # set common compiler flags
 include(LOCAL_FLAGS)
@@ -33,11 +34,11 @@ endif ()
 add_subdirectory(src)
 
 # project files for clion
-message(STATUS "Project source: ${PROJECT_SOURCE_DIR}")
+#message(STATUS "Project source: ${PROJECT_SOURCE_DIR}")
 FILE(GLOB_RECURSE TEST_FILES ${PROJECT_SOURCE_DIR}/test/*.cpp)
-message(STATUS "${TEST_FILES}")
+#message(STATUS "${TEST_FILES}")
 FILE(GLOB_RECURSE TOOL_FILES ${PROJECT_SOURCE_DIR}/tools/*.cpp)
-message(STATUS "${TOOL_FILES}")
+#message(STATUS "${TOOL_FILES}")
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
@@ -48,6 +49,16 @@ foreach (path ${TEST_FILES})
     set_target_properties(test_${file} PROPERTIES OUTPUT_NAME test_${file}${ENV_SUFFIX})
     target_link_libraries(test_${file} ${PROJECT_NAME}_STATIC)
     set_target_properties(test_${file} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${LOCAL_OUTPUT_DIR}/lib)
+
+    if(OTL_WITH_OPENCV)
+        add_definitions(-DOTL_WITH_OPENCV)
+        set(OpenCV_DIR "E:/software_installed/opencv3/opencv3/build")
+#        message(STATUS "CMAKE_MODULE_PATH:${CMAKE_MODULE_PATH}")
+        find_package(OpenCV REQUIRED)
+        include_directories(${OpenCV_INLCUDE_DIRS})
+        target_link_libraries(test_${file} ${OpenCV_LIBS})
+    endif()
+
 endforeach ()
 
 foreach (path ${TOOL_FILES})

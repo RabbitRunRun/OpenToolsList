@@ -5,6 +5,7 @@
 #ifndef OTL_COMMON_STRUCT_H
 #define OTL_COMMON_STRUCT_H
 #include <memory>
+#include <vector>
 namespace otl{
     struct PointF{
         float x;
@@ -12,11 +13,27 @@ namespace otl{
     };
 
     struct Rect{
+
+        Rect(){}
+
+        Rect(PointF p1, PointF p2){
+            top_left = p1;
+            bottom_right = p2;
+        }
+
         PointF top_left;
         PointF bottom_right;
     };
 
     struct Line{
+
+        Line(){}
+
+        Line(PointF _p1, PointF _p2){
+            p1 = _p1;
+            p2 = _p2;
+        }
+
         PointF p1;
         PointF p2;
     };
@@ -27,19 +44,39 @@ namespace otl{
         Polygon(size_t num){
             set_num(num);
         }
+        Polygon(const std::vector<PointF>& vecs){
+            set_num(vecs.size());
+            for(int i = 0; i < vecs.size(); i++){
+                set_point(i, vecs[i]);
+            }
+        }
         void set_num(size_t num){
-            size = num;
-            points.reset(new PointF[size]);
+            _size = num;
+            _points.reset(new PointF[_size]);
         }
 
-        size_t get_num() const {
-            return size;
+        size_t get_size() const {
+            return _size;
         }
-        shared_points get_points(){
-            return points;
+        shared_points points(){
+            return _points;
         }
-        shared_points points;
-        size_t  size;
+
+        void set_point(int32_t i, const PointF& point){
+            reinterpret_cast<PointF*>(_points.get())[i] = point;
+        }
+
+         PointF point(int32_t i)  {
+            return reinterpret_cast<PointF*>(_points.get())[i];
+        }
+
+        const PointF point(int32_t i) const {
+            return reinterpret_cast<PointF*>(_points.get())[i];
+        }
+
+    private:
+        shared_points _points;
+        size_t  _size;
     };
 }
 
