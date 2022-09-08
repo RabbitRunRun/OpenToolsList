@@ -1,6 +1,7 @@
 project(OTL)
 
 set(OTL_SOURCE_DIR ${PROJECT_SOURCE_DIR}/..)
+#message(STATUS "OTL_SOURCE_DIR: ${OTL_SOURCE_DIR}")
 
 option(OTL_WITH_OPENSSL "Supporting AES, RAS and SSL with OpenSSL" OFF)
 
