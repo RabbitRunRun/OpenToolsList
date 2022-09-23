@@ -15,7 +15,7 @@ list(APPEND CMAKE_PREFIX_PATH ${SOLUTION_DIR}/cmake)
 set(PLATFORM "auto" CACHE STRING "auto, x86 or x64")
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Debug or Release")
 set(CONFIGURATION ${CMAKE_BUILD_TYPE})
-option(OTL_WITH_OPENCV "with opencv to compile test files" ON)
+option(OTL_WITH_OPENCV "with opencv to compile test files" OFF)
 
 # set common compiler flags
 include(LOCAL_FLAGS)
