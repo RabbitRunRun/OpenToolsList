@@ -22,13 +22,17 @@ namespace otl {
         IniSection() = default;
         ~IniSection() = default;
 
-        void insert(const std::string& key, const std::string& value) {
+        self& insert(const std::string& key, const std::string& value) {
             m_map_section[key] = value;
+            return *this;
         }
 
-        template<typename _KEY, typename _VALUE>
-        void insert(const _KEY& key, const _VALUE& value ) {
-            insert(std::to_string(key), std::string(value));
+        self& remove(const std::string& key) {
+            auto it = m_map_section.find(key);
+            if (it != m_map_section.end()) {
+                m_map_section.erase(it);
+            }
+            return *this;
         }
 
         bool has_key(const std::string& key) const {
@@ -75,7 +79,18 @@ namespace otl {
             return keys;
         }
 
+        friend  class IniParser;
+
     private:
+        std::unordered_map<std::string, std::string>::iterator begin()  {
+            return m_map_section.begin();
+        }
+
+        std::unordered_map<std::string, std::string>::iterator  end()  {
+            return m_map_section.end();
+        }
+
+
         std::unordered_map<std::string, std::string> m_map_section;
     };
 
@@ -136,11 +151,36 @@ namespace otl {
                     m_map_sections[temp_key].insert(splits[0], splits[1]);
                 }
             }
+#undef FORMAT_ERROR_LOG
+        }
+
+        IniSection& append_section(const std::string& sec_name) {
+            auto it = m_map_sections.find(sec_name);
+            if (it == m_map_sections.end()) {
+                IniSection section;
+                m_map_sections[sec_name] = section;
+            }
+            return m_map_sections[sec_name];
+        }
+
+        void remove_section(const std::string& sec_name) {
+            auto it = m_map_sections.find(sec_name);
+            if (it != m_map_sections.end()) {
+                m_map_sections.erase(it);
+            }
         }
 
         bool has_section(const std::string& key) {
             auto iter = m_map_sections.find(key);
             return iter != m_map_sections.end();
+        }
+
+        IniSection& get(const std::string& key) {
+            return this->operator[](key);
+        }
+
+        IniSection& operator[](const std::string& key) {
+            return m_map_sections[key];
         }
 
         std::vector<std::string> keys() const {
@@ -153,10 +193,6 @@ namespace otl {
             return keys;
         }
 
-        IniSection& operator[](const std::string& key) {
-            return m_map_sections[key];
-        }
-
         static std::string trim(const std::string& line) {
             if(line.size() <= 0) return line;
 
@@ -164,6 +200,23 @@ namespace otl {
             size_t end = line.find_last_not_of(' ');
 
             return line.substr(begin, end - begin + 1);
+        }
+
+        bool save(const std::string& ini_path)  {
+            std::ofstream out(ini_path);
+            if (!out.is_open()) {
+                OTL_LOG(LOG_ERROR) <<  "Create file " << ini_path << " failed." << eject;
+                return false;
+            }
+            for (auto& pair : m_map_sections) {
+                 const std::string& name = pair.first;
+                 out << "[" << name << "]" << std::endl;
+                 IniSection& section = pair.second;
+                for (const auto& pair_in_sec : section) {
+                    out << pair_in_sec.first << " = " << pair_in_sec.second << std::endl;
+                }
+            }
+            return true;
         }
 
     private:
