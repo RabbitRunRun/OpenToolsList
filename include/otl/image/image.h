@@ -30,27 +30,35 @@ namespace otl{
             if(data_from) load(data_from);
         }
 
-        void set_width(int32_t width){m_width = width;}
+        void set_width(int32_t width){ m_width = width; }
         int32_t  get_width() const {
             return m_width;
         }
 
-        void set_height(int32_t height){m_height = height;}
+        void set_height(int32_t height){ m_height = height; }
         int32_t get_height() const {
             return m_height;
         }
 
-        void set_channels(int32_t channels){m_channels = channels;}
+        void set_channels(int32_t channels){ m_channels = channels; }
         int32_t get_channels() const {
             return m_channels;
         }
 
+        T* data() {
+            return this->m_data.get();
+        }
+
+        const T* data() const {
+            return this->m_data.get()
+        }
+
         void fill_zeros(){
+            int len = m_width * m_height * m_channels;
             if(m_data == nullptr) {
-                int len = m_width * m_height * m_channels;
                 m_data.reset(new T[len]);
-                memset(m_data.get(), 0, sizeof(T) * len);
             }
+            memset(m_data.get(), 0, sizeof(T) * len);
         }
 
         template <typename Dtype>
@@ -81,6 +89,17 @@ namespace otl{
         }
 #undef OTL_LOCATION
 
+        Image(const self& other) {
+            this->m_width = other.m_width;
+            this->m_height = other.m_height;
+            this->m_channels = other.m_channels;
+            this->m_data = other.m_data;
+        }
+
+        Image(self&& other) {
+            *this = std::move(other);
+        }
+
         self& operator=(const self &other){
             this->m_width = other.m_width;
             this->m_height = other.m_height;
@@ -89,19 +108,30 @@ namespace otl{
             return *this;
         }
 
+        self& operator=(self&& other) {
+            *this = std::move(other);
+        }
+
     private:
-        std::shared_ptr<T> m_data;
+        std::shared_ptr<T> m_data = nullptr;
         int m_width;
         int m_height;
         int m_channels;
     };
-    template class Image<char>;
-
-    template class Image<unsigned char>;
-
-    template class Image<float>;
-
-    template class Image<double>;
 }
+
+template class otl::Image<char>;
+
+template class otl::Image<unsigned char>;
+
+template class otl::Image<int>;
+
+template class otl::Image<int32_t>;
+
+template class otl::Image<uint32_t>;
+
+template class otl::Image<float>;
+
+template class otl::Image<double>;
 
 #endif //OTL_IMAGE_STRUCT_H

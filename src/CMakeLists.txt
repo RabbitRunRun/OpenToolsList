@@ -9,7 +9,7 @@ include_directories(${OTL_SOURCE_DIR}/include)
 include_directories(${OTL_SOURCE_DIR}/include/otl)
 include_directories(${OTL_SOURCE_DIR}/src)
 
-set(OTL_MODULES codec io lego mem net sync tools utils)
+set(OTL_MODULES codec io lego mem net sync tools utils parser thread)
 
 if (OTL_WITH_OPENSSL)
     LIST(APPEND OTL_MODULES ssl)
