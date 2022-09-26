@@ -9,30 +9,32 @@
 #include <functional>
 #include <memory>
 #include <condition_variable>
+#include <atomic>
 
-namespace ts {
+namespace otl {
     class Thread {
     public:
         using self = Thread;
         using task_type = std::function<void(int)>;
         using after_task_type = std::function<void(int)>;
 
-        Thread() = default;
+        Thread();
         ~Thread();
 
         Thread(const Thread&) = delete;
         Thread& operator=(const Thread&) = delete;
 
-        void run(const task_type& task);
+        void run(int thread_index, const task_type& task);
 
-        void run(const task_type& task, const after_task_type& after_task);
+        void run(int thread_index, const task_type& task, const after_task_type& after_task);
 
         void join();
 
         bool is_working();
 
     private:
-        bool m_is_working;
+        int m_core_index;
+        std::atomic<bool> m_is_working;
         std::thread m_thread;
         std::condition_variable m_cv_core;
         std::mutex m_mutex;

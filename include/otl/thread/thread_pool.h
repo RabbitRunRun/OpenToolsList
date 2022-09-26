@@ -9,9 +9,9 @@
 #include <queue>
 #include <atomic>
 
-#include "thread/thread.h"
+#include "otl/thread/thread.h"
 
-namespace ts {
+namespace otl {
     class ThreadPool {
     public:
         using self = ThreadPool;
@@ -26,21 +26,23 @@ namespace ts {
 
         bool is_busy();
 
-        void disable_working();
-
-        void enable_working();
+//        void disable_working();
+//
+//        void enable_working();
 
         void join();
 
         int get_worker_number();
 
     private:
-        std::atomic<bool> m_is_working;
         std::atomic<int> m_core_number;
         std::vector<Thread*> m_thread_pool;
         std::queue<int> m_cores;
         std::condition_variable m_cv;
         std::mutex m_mutex;
+    private:
+        int load();
+        void recycle(int id);
     };
 }
 #endif //OTL_THREAD_POOL_H
