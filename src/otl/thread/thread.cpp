@@ -23,9 +23,9 @@ namespace otl {
             m_after_task = nullptr;
             m_cv_core.notify_all();
         }
-        std::cout<<"Thread begin to join." << std::endl;
+//        std::cout<<"Thread begin to join." << std::endl;
         m_thread.join();
-        std::cout<<"Thread finished to join." << std::endl;
+//        std::cout<<"Thread finished to join." << std::endl;
     }
 
     bool Thread::is_working() {
