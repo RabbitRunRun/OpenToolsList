@@ -15,16 +15,16 @@ namespace otl {
     }
 
     ThreadPool::~ThreadPool() {
-        this->join();
+        for (int i = 0; i < m_core_number; ++i) {
+            delete m_thread_pool[i];
+        }
     }
 
     void ThreadPool::join() {
         std::unique_lock<std::mutex> locker(m_mutex);
         while(m_cores.size() < m_thread_pool.size()) m_cv.wait(locker);
 
-        for (int i = 0; i < m_core_number; ++i) {
-            delete m_thread_pool[i];
-        }
+
 //        std::cout<<"ThreadPool Join finished" <<std::endl;
     }
 
